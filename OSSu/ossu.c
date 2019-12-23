@@ -5,6 +5,7 @@
 #include "bpfmap.h"
 
 struct ubpf_vm *vm;
+
 int main(int argc,char *argv[]){
     struct ubpf_vm *vm = ubpf_create();
     if (!vm) {
