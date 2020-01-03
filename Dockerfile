@@ -1,36 +1,21 @@
-FROM openfaas/classic-watchdog:0.18.1 as watchdog
-
 #procurar uma imagem melhor
 FROM ubuntu:16.04
-#alpine não tem apt-get
-#FROM alpine:3.10
 
 RUN mkdir -p /home/app
 
-COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
-
-# Dependencies
-#RUN apk update
-#RUN apk upgrade
-# RUN apk search autoreconf
-#RUN apk add autoconf2.13-2.13-r0
-#RUN apk add git
-#RUN apk add autoconf automake libtool curl make g++ unzip
-# RUN apt add pkg-config
-
 # # Dependencies
- RUN apt-get update
- RUN apt-get upgrade -y
- RUN apt-get install dh-autoreconf -y
- RUN apt-get install git -y
- RUN apt-get install autoconf automake libtool curl make g++ unzip -y
- RUN apt install pkg-config
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install dh-autoreconf -y
+RUN apt-get install git -y
+RUN apt-get install autoconf automake libtool curl make g++ unzip -y
+RUN apt install pkg-config
+RUN apt-get install clang-3.9 -y
+RUN apt-get install libc6-dev-i386 -y
 
 # Clone protobuf
 RUN git clone https://github.com/protocolbuffers/protobuf.git
-
 WORKDIR /protobuf
-
 RUN git submodule update --init --recursive
 
 # install and configure protobuf
@@ -55,8 +40,6 @@ RUN ./configure
 RUN make
 RUN make install
 
-RUN apt-get install clang-3.9 -y
-RUN apt-get install libc6-dev-i386 -y
 
 WORKDIR /home/app
 
